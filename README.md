@@ -1,48 +1,24 @@
-# Svelte + Vite
+## 今日やったこと
 
-This template should help get you started developing with Svelte in Vite.
+### 1. 天気＆地図アプリの基本機能作成
+- Svelteを使い、都市名を入力して天気を検索できるインターフェースを実装。
 
-## Recommended IDE Setup
+### 2. Leafletによる地図表示の導入
+- Leafletライブラリで地図を表示。
+- 初期表示は東京周辺（緯度35.68, 経度139.76）に設定。
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+### 3. OpenWeatherMap API連携
+- APIを利用し、入力された都市の現在の天気情報を取得。
+- 気温、湿度、風速、天気説明を画面に表示。
 
-## Need an official Svelte framework?
+### 4. マーカーの動的更新処理
+- 検索都市に合わせて地図の中心を移動。
+- 既存マーカーを削除し、新たにマーカーを設置して重複表示を防止。
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+### 5. UI・レイアウト調整
+- 検索バーをページ上部に配置し、その下に地図を表示。
+- 地図のサイズ調整やエラーメッセージ表示でユーザビリティ向上。
 
-## Technical considerations
+### 6. 環境変数の活用
+- APIキーを環境変数で管理し、セキュリティを確保。
 
-**Why use this over SvelteKit?**
-
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
-
-This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
-
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
-
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
-
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `checkJs` in the JS template?**
-
-It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/sveltejs/svelte-hmr/tree/master/packages/svelte-hmr#preservation-of-local-state).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```js
-// store.js
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
-# svelte-weather-app
