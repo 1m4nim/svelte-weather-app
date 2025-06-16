@@ -1,17 +1,17 @@
 <script>
   import { onMount } from 'svelte';
   import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
 
   let city = "";
   let weather = null;
   let error = "";
   let map;
-  let marker;
+  let marker = null;
 
   const API_KEY = import.meta.env.VITE_API_KEY;
 
   onMount(() => {
-    // 初期地図（東京）
     map = L.map('map').setView([35.681236, 139.767125], 5);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
@@ -33,15 +33,14 @@
 
       const { lat, lon } = weather.coord;
 
-      // 地図を更新
       map.setView([lat, lon], 10);
 
-      // すでにマーカーがある場合は削除
+      // 既存のマーカーを削除
       if (marker) {
         map.removeLayer(marker);
       }
 
-      // マーカー追加
+      // 新しいマーカーを追加
       marker = L.marker([lat, lon]).addTo(map)
         .bindPopup(`
           <b>${weather.name}</b><br>
@@ -50,6 +49,7 @@
           湿度: ${weather.main.humidity} %<br>
           風速: ${weather.wind.speed} m/s
         `).openPopup();
+
     } catch (e) {
       weather = null;
       error = e.message;
@@ -57,23 +57,58 @@
   }
 </script>
 
-<h1>天気 & 地図アプリ</h1>
+<style>
+  #map {
+    height: 400px;
+    margin-top: 1rem;
+  }
 
-<input type="text" bind:value={city} placeholder="都市名を入力" />
-<button on:click={fetchWeather}>検索</button>
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 1rem;
+  }
 
-{#if error}
-  <p style="color: red;">{error}</p>
-{/if}
+  input {
+    padding: 0.5rem;
+    width: 70%;
+    margin-right: 0.5rem;
+  }
 
-{#if weather}
+  button {
+    padding: 0.5rem 1rem;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .error {
+    color: red;
+  }
+</style>
+
+<div class="container">
+  <h1>天気 & 地図アプリ</h1>
+
   <div>
-    <h2>{weather.name} の天気</h2>
-    <p>{weather.weather[0].description}</p>
-    <p>気温: {weather.main.temp} ℃</p>
-    <p>湿度: {weather.main.humidity} %</p>
-    <p>風速: {weather.wind.speed} m/s</p>
+    <input type="text" bind:value={city} placeholder="都市名を入力" />
+    <button on:click={fetchWeather}>検索</button>
   </div>
-{/if}
 
-<div id="map"></div>
+  {#if error}
+    <p class="error">{error}</p>
+  {/if}
+
+  {#if weather}
+    <div>
+      <h2>{weather.name} の天気</h2>
+      <p>{weather.weather[0].description}</p>
+      <p>気温: {weather.main.temp} ℃</p>
+      <p>湿度: {weather.main.humidity} %</p>
+      <p>風速: {weather.wind.speed} m/s</p>
+    </div>
+  {/if}
+
+  <div id="map"></div>
+</div>
